@@ -59,9 +59,9 @@ elif page == "Check News":
             st.warning("Please enter some news text.")
         else:
             try:
-                model, vectorizer = load_models()
-              features = vectorizer.transform([news])
-        prediction = model.predict(features)[0]
+            model, vectorizer = load_models()
+            features = vectorizer.transform([news])
+            prediction = model.predict(features)[0]
 
         # Convert prediction to integer or string safely
         if prediction == 0 or str(prediction).strip() == "0":
