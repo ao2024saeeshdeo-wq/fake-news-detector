@@ -65,9 +65,9 @@ elif page == "Check News":
           
 
 
-                if str(prediction) == "0":
+                if str(prediction) == "[0]":
                     st.error("🚨 Likely Fake News")
-                elif str(prediction) == "1":
+                elif str(prediction) == "[1]":
                     st.success("✅ Likely Real News")
                 else:
                     st.info(f"Model prediction: {prediction}")
