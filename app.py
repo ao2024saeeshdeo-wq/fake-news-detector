@@ -1,3 +1,4 @@
+```python
 import streamlit as st
 import joblib
 
@@ -15,19 +16,30 @@ def load_models():
 
 st.markdown("""
 <style>
-.stApp { background-color: #f4f8fd; }
+.stApp {
+    background-color: #f4f8fd;
+}
 .hero {
     padding: 32px;
     border-radius: 16px;
     background: linear-gradient(120deg, #e3efff, #ffffff);
     border: 1px solid #d5e5fa;
 }
-.hero h1 { color: #12325a; }
+.hero h1 {
+    color: #12325a;
+}
+.hero p {
+    color: #415a77;
+    font-size: 18px;
+}
 </style>
 """, unsafe_allow_html=True)
 
 st.sidebar.title("🔎 Fake News Detector")
-page = st.sidebar.radio("Navigate", ["Home", "Check News", "About"])
+page = st.sidebar.radio(
+    "Navigate",
+    ["Home", "Check News", "About"]
+)
 
 if page == "Home":
     st.markdown("""
@@ -38,16 +50,15 @@ if page == "Home":
     """, unsafe_allow_html=True)
 
     st.write("")
-    a, b, c = st.columns(3)
-    a.info("🛡️ Machine-learning powered")
-    b.info("⚡ Quick predictions")
-    c.info("✍️ Simple to use")
+    col1, col2, col3 = st.columns(3)
 
-    if st.button("Get Started"):
-        st.info("Choose Check News in the sidebar to begin.")
+    col1.info("🛡️ Machine-learning powered")
+    col2.info("⚡ Quick predictions")
+    col3.info("✍️ Simple to use")
 
 elif page == "Check News":
     st.title("📰 Check a News Article")
+
     news = st.text_area(
         "Paste a headline or news article",
         height=220,
@@ -72,35 +83,57 @@ elif page == "Check News":
 
                 st.caption(
                     "This is a model prediction, not proof. "
-                    "Verify important claims with reliable sources."
+                    "Verify important claims using reliable sources."
                 )
-            except FileNotFoundError:
-                st.error(
-                    "Model files not found. Upload both .pkl files "
-                    "to the same folder as app.py."
-                )
+
             except Exception as error:
-                st.error("Prediction failed. Check the model files.")
+                st.error("Prediction failed.")
                 st.code(str(error))
 
 elif page == "About":
-    st.title("About This Project")
-    st.write("""
-    **Fake News Detection with Python and Machine Learning**
+    st.title("📘 About This Project")
 
-    This project classifies news text using a trained model and
-    TF-IDF text vectorization.
+    st.markdown("""
+    ## Fake News Detection with Python and Machine Learning
 
-    **Technologies:** Python, Streamlit, Scikit-learn, and joblib.
+    ### 🎯 Project Objective
+    This project uses machine learning and Natural Language
+    Processing (NLP) to classify news text as likely fake
+    or likely real.
 
-    **Workflow**
-    1. Enter a news article.
-    2. Convert text into numerical features using TF-IDF.
-    3. Ask the trained model for a prediction.
-    4. Display the predicted class.
+    ### ⚙️ How Does It Work?
+    1. The user enters a headline or news article.
+    2. TF-IDF converts the text into numerical features.
+    3. The trained model analyzes the features.
+    4. The website displays its prediction.
 
-    This tool cannot independently verify whether a story is true.
+    ### 🛠️ Technologies Used
+    - **Python:** Programming language
+    - **Streamlit:** Interactive website
+    - **Scikit-learn:** Machine-learning tools
+    - **TF-IDF:** Text feature extraction
+    - **Joblib:** Loading saved model files
+
+    ### 🌟 Key Features
+    - Simple and user-friendly interface
+    - News headline and article analysis
+    - Fast model predictions
+    - Accessible through a web browser
+
+    ### 🎓 Project Information
+    **Project Name:** Fake News Detection with Python
+    and Machine Learning
+
+    **Application:** Fake News Detector
+
+    **Purpose:** College project
+
+    ### ⚠️ Important Disclaimer
+    The prediction is not a guarantee that an article is true
+    or false. Verify important claims using reliable,
+    independent sources.
     """)
 
 st.divider()
-st.caption("Fake News Detector | College Project")
+st.caption("Fake News Detector | Python & Machine Learning")
+```
