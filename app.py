@@ -62,8 +62,8 @@ elif page == "Check News":
                 model, vectorizer = load_models()
                 features = vectorizer.transform([news])
                 prediction = model.predict(features)[0]
-                st.write("Debug - Model prediction:", repr(prediction))
-st.write("Debug - Model classes:", model.classes_)
+          
+
 
                 if str(prediction) == "0":
                     st.error("🚨 Likely Fake News")
