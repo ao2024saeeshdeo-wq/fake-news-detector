@@ -69,19 +69,16 @@ elif page == "Check News":
                 features = vectorizer.transform([news])
                 prediction = model.predict(features)[0]
 
-                # Convert prediction to string for comparison
                 pred_str = str(prediction).strip().lower()
 
-                # Display raw value for verification
-                st.caption(f"🔍 Raw Model Output: `{prediction}`")
+                # Display raw output to see exact predicted value
+                st.info(f"🔍 Raw Model Output Value: `{prediction}`")
 
-                # Label Classification:
-                # Note: If 0 is Real and 1 is Fake in your specific dataset, 
-                # swap "Likely Fake News" and "Likely Real News" below.
-                if pred_str in ["0", "0.0", "fake"]:
-                    st.error("🚨 Likely Fake News")
-                elif pred_str in ["1", "1.0", "real", "true"]:
+                # Swapped Mapping: 0 -> REAL, 1 -> FAKE
+                if pred_str in ["0", "0.0", "real"]:
                     st.success("✅ Likely Real News")
+                elif pred_str in ["1", "1.0", "fake"]:
+                    st.error("🚨 Likely Fake News")
                 else:
                     st.info(f"Model prediction: {prediction}")
 
