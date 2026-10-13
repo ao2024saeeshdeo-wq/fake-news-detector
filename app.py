@@ -71,14 +71,11 @@ elif page == "Check News":
 
                 pred_str = str(prediction).strip().lower()
 
-                # Display raw output to see exact predicted value
-                st.info(f"🔍 Raw Model Output Value: `{prediction}`")
-
-                # Swapped Mapping: 0 -> REAL, 1 -> FAKE
-                if pred_str in ["0", "0.0", "real"]:
-                    st.success("✅ Likely Real News")
-                elif pred_str in ["1", "1.0", "fake"]:
+                # Correct mapping: 0 -> FAKE, 1 -> REAL
+                if pred_str in ["0", "0.0", "fake"]:
                     st.error("🚨 Likely Fake News")
+                elif pred_str in ["1", "1.0", "real"]:
+                    st.success("✅ Likely Real News")
                 else:
                     st.info(f"Model prediction: {prediction}")
 
