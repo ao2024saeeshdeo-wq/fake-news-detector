@@ -27,7 +27,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.sidebar.title("🔎 Fake News Detector")
-page = st.sidebar.radio("Navigate", ["Home", "Check News", "About"])
+page = st.sidebar.radio("Navigate", ["Home", "Check News"])
 
 if page == "Home":
     st.markdown("""
@@ -83,24 +83,6 @@ elif page == "Check News":
                 st.error("Prediction failed. Check the model files.")
                 st.code(str(error))
 
-elif page == "About":
-    st.title("About This Project")
-    st.write("""
-    **Fake News Detection with Python and Machine Learning**
-
-    This project classifies news text using a trained model and
-    TF-IDF text vectorization.
-
-    **Technologies:** Python, Streamlit, Scikit-learn, and joblib.
-
-    **Workflow**
-    1. Enter a news article.
-    2. Convert text into numerical features using TF-IDF.
-    3. Ask the trained model for a prediction.
-    4. Display the predicted class.
-
-    This tool cannot independently verify whether a story is true.
-    """)
 
 st.divider()
 st.caption("Fake News Detector | College Project")
