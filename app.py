@@ -132,7 +132,7 @@ elif page == "About":
     The prediction is not a guarantee that an article is true
     or false. Verify important claims using reliable,
     independent sources.
-    """)
+    )
 
 st.divider()
 st.caption("Fake News Detector | Python & Machine Learning")
