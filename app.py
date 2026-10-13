@@ -1,4 +1,3 @@
-```python
 import streamlit as st
 import joblib
 
@@ -14,51 +13,94 @@ def load_models():
     vectorizer = joblib.load("tfidf_vectorizer.pkl")
     return model, vectorizer
 
-st.title("🔎 Fake News Detection")
-st.write("### Fake News Detection using Python and Machine Learning")
-st.write("Enter a news article below to check its prediction.")
+st.markdown("""
+<style>
+.stApp { background-color: #f4f8fd; }
+.hero {
+    padding: 32px;
+    border-radius: 16px;
+    background: linear-gradient(120deg, #e3efff, #ffffff);
+    border: 1px solid #d5e5fa;
+}
+.hero h1 { color: #12325a; }
+</style>
+""", unsafe_allow_html=True)
 
-news = st.text_area(
-    "Enter news text here:",
-    height=200,
-    placeholder="Paste your news headline or article here..."
-)
+st.sidebar.title("🔎 Fake News Detector")
+page = st.sidebar.radio("Navigate", ["Home", "Check News", "About"])
 
-if st.button("Check News"):
-    if news.strip() == "":
-        st.warning("Please enter some news text first.")
-    else:
-        try:
-            model, vectorizer = load_models()
-            news_vector = vectorizer.transform([news])
-            prediction = model.predict(news_vector)[0]
+if page == "Home":
+    st.markdown("""
+    <div class="hero">
+        <h1>Detect Fake News with Machine Learning</h1>
+        <p>Analyze news text using your trained machine-learning model.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-            st.subheader("Prediction Result")
+    st.write("")
+    a, b, c = st.columns(3)
+    a.info("🛡️ Machine-learning powered")
+    b.info("⚡ Quick predictions")
+    c.info("✍️ Simple to use")
 
-            if str(prediction) == "0":
-                st.error("🚨 This news is predicted to be FAKE.")
-            elif str(prediction) == "1":
-                st.success("✅ This news is predicted to be REAL.")
-            else:
-                st.info(f"Model prediction: {prediction}")
+    if st.button("Get Started"):
+        st.info("Choose Check News in the sidebar to begin.")
 
-            st.caption(
-                "This is a machine-learning prediction, not a guarantee. "
-                "Please verify important news using reliable sources."
-            )
+elif page == "Check News":
+    st.title("📰 Check a News Article")
+    news = st.text_area(
+        "Paste a headline or news article",
+        height=220,
+        placeholder="Type or paste news text here..."
+    )
 
-        except Exception as e:
-            st.error("Something went wrong while checking the news.")
-            st.code(str(e))
+    if st.button("🔍 Check News", type="primary"):
+        if not news.strip():
+            st.warning("Please enter some news text.")
+        else:
+            try:
+                model, vectorizer = load_models()
+                features = vectorizer.transform([news])
+                prediction = model.predict(features)[0]
+
+                if str(prediction) == "0":
+                    st.error("🚨 Likely Fake News")
+                elif str(prediction) == "1":
+                    st.success("✅ Likely Real News")
+                else:
+                    st.info(f"Model prediction: {prediction}")
+
+                st.caption(
+                    "This is a model prediction, not proof. "
+                    "Verify important claims with reliable sources."
+                )
+            except FileNotFoundError:
+                st.error(
+                    "Model files not found. Upload both .pkl files "
+                    "to the same folder as app.py."
+                )
+            except Exception as error:
+                st.error("Prediction failed. Check the model files.")
+                st.code(str(error))
+
+elif page == "About":
+    st.title("About This Project")
+    st.write("""
+    **Fake News Detection with Python and Machine Learning**
+
+    This project classifies news text using a trained model and
+    TF-IDF text vectorization.
+
+    **Technologies:** Python, Streamlit, Scikit-learn, and joblib.
+
+    **Workflow**
+    1. Enter a news article.
+    2. Convert text into numerical features using TF-IDF.
+    3. Ask the trained model for a prediction.
+    4. Display the predicted class.
+
+    This tool cannot independently verify whether a story is true.
+    """)
 
 st.divider()
-
-st.subheader("About This Project")
-st.write(
-    "This project uses Natural Language Processing (NLP), "
-    "TF-IDF vectorization, and a trained machine-learning model "
-    "to classify news text."
-)
-
-st.write("**Technologies:** Python, Streamlit, Scikit-learn, TF-IDF, Joblib")
-```
+st.caption("Fake News Detector | College Project")
