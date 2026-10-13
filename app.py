@@ -60,17 +60,16 @@ elif page == "Check News":
         else:
             try:
                 model, vectorizer = load_models()
-                features = vectorizer.transform([news])
-                prediction = model.predict(features)[0]
-          
+              features = vectorizer.transform([news])
+        prediction = model.predict(features)[0]
 
-
-                if str(prediction) == "[0]":
-                    st.error("🚨 Likely Fake News")
-                elif str(prediction) == "[1]":
-                    st.success("✅ Likely Real News")
-                else:
-                    st.info(f"Model prediction: {prediction}")
+        # Convert prediction to integer or string safely
+        if prediction == 0 or str(prediction).strip() == "0":
+            st.error("🚨 Likely Fake News")
+        elif prediction == 1 or str(prediction).strip() == "1":
+            st.success("✅ Likely Real News")
+        else:
+            st.info(f"Model prediction: {prediction}")
 
                 st.caption(
                     "This is a model prediction, not proof. "
