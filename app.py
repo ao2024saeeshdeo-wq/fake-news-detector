@@ -3,7 +3,7 @@ import joblib
 
 st.set_page_config(
     page_title="Fake News Detector",
-    page_icon="🔎",
+    page_icon="🔍",
     layout="wide"
 )
 
@@ -26,7 +26,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.sidebar.title("🔎 Fake News Detector")
+st.sidebar.title("🔍 Fake News Detector")
 page = st.sidebar.radio("Navigate", ["Home", "Check News"])
 
 if page == "Home":
@@ -39,9 +39,9 @@ if page == "Home":
 
     st.write("")
     a, b, c = st.columns(3)
-    a.info("🛡️ Machine-learning powered")
+    a.info("💡 Machine-learning powered")
     b.info("⚡ Quick predictions")
-    c.info("✍️ Simple to use")
+    c.info("🔥 Simple to use")
 
     if st.button("Get Started"):
         st.info("Choose Check News in the sidebar to begin.")
@@ -59,22 +59,25 @@ elif page == "Check News":
             st.warning("Please enter some news text.")
         else:
             try:
-            model, vectorizer = load_models()
-            features = vectorizer.transform([news])
-            prediction = model.predict(features)[0]
+                model, vectorizer = load_models()
+                features = vectorizer.transform([news])
+                prediction = model.predict(features)[0]
 
-        # Convert prediction to integer or string safely
-        if prediction == 0 or str(prediction).strip() == "0":
-            st.error("🚨 Likely Fake News")
-        elif prediction == 1 or str(prediction).strip() == "1":
-            st.success("✅ Likely Real News")
-        else:
-            st.info(f"Model prediction: {prediction}")
+                # Standardize output string checking
+                pred_str = str(prediction).strip().lower()
+
+                if pred_str in ["0", "0.0", "fake"]:
+                    st.error("🚨 Likely Fake News")
+                elif pred_str in ["1", "1.0", "real", "true"]:
+                    st.success("✅ Likely Real News")
+                else:
+                    st.info(f"Model prediction: {prediction}")
 
                 st.caption(
                     "This is a model prediction, not proof. "
                     "Verify important claims with reliable sources."
                 )
+
             except FileNotFoundError:
                 st.error(
                     "Model files not found. Upload both .pkl files "
@@ -83,7 +86,6 @@ elif page == "Check News":
             except Exception as error:
                 st.error("Prediction failed. Check the model files.")
                 st.code(str(error))
-
 
 st.divider()
 st.caption("Fake News Detector | College Project")
