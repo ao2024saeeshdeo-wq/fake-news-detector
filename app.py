@@ -1,18 +1,21 @@
 import streamlit as st
 import joblib
 
+# 1. Page Configuration
 st.set_page_config(
     page_title="Fake News Detector",
     page_icon="🔍",
     layout="wide"
 )
 
+# 2. Model Loading
 @st.cache_resource
 def load_models():
     model = joblib.load("fake_news_model.pkl")
     vectorizer = joblib.load("tfidf_vectorizer.pkl")
     return model, vectorizer
 
+# 3. Custom CSS Styling
 st.markdown("""
 <style>
 .stApp { background-color: #f4f8fd; }
@@ -26,9 +29,11 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# 4. Sidebar Navigation
 st.sidebar.title("🔍 Fake News Detector")
 page = st.sidebar.radio("Navigate", ["Home", "Check News"])
 
+# 5. Home Page
 if page == "Home":
     st.markdown("""
     <div class="hero">
@@ -46,6 +51,7 @@ if page == "Home":
     if st.button("Get Started"):
         st.info("Choose Check News in the sidebar to begin.")
 
+# 6. Check News Page
 elif page == "Check News":
     st.title("📰 Check a News Article")
     news = st.text_area(
@@ -63,9 +69,15 @@ elif page == "Check News":
                 features = vectorizer.transform([news])
                 prediction = model.predict(features)[0]
 
-                # Standardize output string checking
+                # Convert prediction to string for comparison
                 pred_str = str(prediction).strip().lower()
 
+                # Display raw value for verification
+                st.caption(f"🔍 Raw Model Output: `{prediction}`")
+
+                # Label Classification:
+                # Note: If 0 is Real and 1 is Fake in your specific dataset, 
+                # swap "Likely Fake News" and "Likely Real News" below.
                 if pred_str in ["0", "0.0", "fake"]:
                     st.error("🚨 Likely Fake News")
                 elif pred_str in ["1", "1.0", "real", "true"]:
