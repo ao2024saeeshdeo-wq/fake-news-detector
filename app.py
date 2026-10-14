@@ -64,12 +64,20 @@ elif page == "Check News":
         if not news.strip():
             st.warning("Please enter some news text.")
         else:
+            # Check length to warn about TF-IDF limits on short text
+            word_count = len(news.split())
+            if word_count < 10:
+                st.warning("⚠️ Input text is very short. TF-IDF models require full paragraphs or longer context for reliable accuracy.")
+
             try:
                 model, vectorizer = load_models()
                 features = vectorizer.transform([news])
                 prediction = model.predict(features)[0]
 
                 pred_str = str(prediction).strip().lower()
+
+                # Display model output value
+                st.caption(f"🔍 Raw Model Output Value: `{prediction}`")
 
                 # Correct mapping: 0 -> FAKE, 1 -> REAL
                 if pred_str in ["0", "0.0", "fake"]:
@@ -79,8 +87,14 @@ elif page == "Check News":
                 else:
                     st.info(f"Model prediction: {prediction}")
 
+                # Optional: Show prediction probability if supported
+                if hasattr(model, "predict_proba"):
+                    probs = model.predict_proba(features)[0]
+                    confidence = max(probs) * 100
+                    st.write(f"**Model Confidence:** {confidence:.2f}%")
+
                 st.caption(
-                    "This is a model prediction, not proof. "
+                    "This is a statistical model prediction based on text patterns, not a live fact-checker. "
                     "Verify important claims with reliable sources."
                 )
 
